@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FileDrop | Send files</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/main.css')}}"
+    />
+
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-slate-50 m-0 p-0">
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="text-center text-xl text-bold w-[20%] mx-auto">
+      {% for message in messages %}
+      <div class="bg-red-200 py-4 rounded-md text-red-700 mb-3">
+        {{message}}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+
+    <div
+      class="flex justify-center items-center h-screen flex-col content-evenly text-center"
+    >
+      <p class="p-4 text-5xl">
+        FileDrop <span class="text-blue-500 font-bold">Anything</span>
+      </p>
+
+      <div
+        id="drop"
+        class="dropzone flex align-middle justify-center dropzone w-[20%] h-[30%] rounded-md duration-150 !bg-blue-50 hover:!bg-blue-100 !border-dashed !border-blue-500"
+      >
+        <div class="dz-message flex flex-col justify-center">
+          <div>
+            Drag and <span class="text-blue-500">Drop</span> your files here or
+          </div>
+          <button
+            data-hs-file-upload-trigger
+            class="bg-blue-500 px-4 py-2 rounded-full max-w-[80%] mx-auto mt-5 text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+          >
+            Click to upload
+          </button>
+        </div>
+      </div>
+
+      <!-- <input
+          type="submit"
+          class="bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+          value="Drop"
+          onclick="myDropzone.processQueue()"
+        /> -->
+    </div>
+
+    <style>
+      .dz-preview {
+        background: transparent !important;
+      }
+
+      .dz-remove {
+        color: #ef4444 !important;
+      }
+
+      .dz-remove:hover {
+        text-decoration: none !important;
+        color: #b91c1c !important;
+      }
+    </style>
+
+    <script>
+      var myDropzone = new Dropzone("#drop", {
+        url: "{{url_for('upload')}}",
+        paramName: "file",
+        maxFiles: 10,
+        maxFilesize: 10000,
+        addRemoveLinks: true,
+        previewTemplate: `
+        <div class="dz-preview dz-file-preview">
+        <div class="dz-image"><img data-dz-thumbnail /></div>
+        <div class="dz-details">
+          <div class="dz-filename"><span data-dz-name></span></div>
+        </div>
+        <div class="dz-progress">
+          <span class="dz-upload" data-dz-uploadprogress></span>
+        </div>
+        <div class="dz-error-message !mt-5" >Couldn't upload!</span></div>
+        <div class="dz-success-mark !mt-[-70px]">
+          <svg
+            width="54"
+            height="54"
+            viewBox="0 0 54 54"
+            fill="#10b981"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2071 29.7929L14.2929 25.7071C14.6834 25.3166 15.3166 25.3166 15.7071 25.7071L21.2929 31.2929C21.6834 31.6834 22.3166 31.6834 22.7071 31.2929L38.2929 15.7071C38.6834 15.3166 39.3166 15.3166 39.7071 15.7071L43.7929 19.7929C44.1834 20.1834 44.1834 20.8166 43.7929 21.2071L22.7071 42.2929C22.3166 42.6834 21.6834 42.6834 21.2929 42.2929L10.2071 31.2071C9.81658 30.8166 9.81658 30.1834 10.2071 29.7929Z"
+            />
+          </svg>
+        </div>
+        <div class="dz-error-mark !mt-[-70px]">
+          <svg
+            width="54"
+            height="54"
+            viewBox="0 0 54 54"
+            fill="#ef4444"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M26.2929 20.2929L19.2071 13.2071C18.8166 12.8166 18.1834 12.8166 17.7929 13.2071L13.2071 17.7929C12.8166 18.1834 12.8166 18.8166 13.2071 19.2071L20.2929 26.2929C20.6834 26.6834 20.6834 27.3166 20.2929 27.7071L13.2071 34.7929C12.8166 35.1834 12.8166 35.8166 13.2071 36.2071L17.7929 40.7929C18.1834 41.1834 18.8166 41.1834 19.2071 40.7929L26.2929 33.7071C26.6834 33.3166 27.3166 33.3166 27.7071 33.7071L34.7929 40.7929C35.1834 41.1834 35.8166 41.1834 36.2071 40.7929L40.7929 36.2071C41.1834 35.8166 41.1834 35.1834 40.7929 34.7929L33.7071 27.7071C33.3166 27.3166 33.3166 26.6834 33.7071 26.2929L40.7929 19.2071C41.1834 18.8166 41.1834 18.1834 40.7929 17.7929L36.2071 13.2071C35.8166 12.8166 35.1834 12.8166 34.7929 13.2071L27.7071 20.2929C27.3166 20.6834 26.6834 20.6834 26.2929 20.2929Z"
+            />
+          </svg>
+        </div>
+      </div>
+        `,
+      });
+    </script>
+  </body>
+</html>
