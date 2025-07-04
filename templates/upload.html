@@ -16,7 +16,7 @@
       type="text/css"
     />
   </head>
-  <body class="bg-slate-50 m-0 p-0">
+  <body class="bg-slate-50 m-0 p-0 dark:bg-slate-900">
     {% with messages = get_flashed_messages() %} {% if messages %}
     <div class="text-center text-xl text-bold w-[20%] mx-auto">
       {% for message in messages %}
@@ -28,23 +28,23 @@
     {% endif %} {% endwith %}
 
     <div
-      class="flex justify-center items-center h-screen flex-col content-evenly text-center"
+      class="flex justify-center items-center min-h-screen flex-col content-evenly text-center"
     >
-      <p class="p-4 text-5xl">
-        FileDrop <span class="text-blue-500 font-bold">Anything</span>
+      <p class="p-4 text-5xl dark:text-white">
+        FileDrop <span class="font-bold bg-gradient-to-r from-blue-400 to-blue-600 inline-block text-transparent bg-clip-text py-2">Anything</span> <!--text-blue-500-->
       </p>
 
       <div
         id="drop"
-        class="dropzone flex align-middle justify-center dropzone w-[20%] h-[30%] rounded-md duration-150 !bg-blue-50 hover:!bg-blue-100 !border-dashed !border-blue-500"
+        class="dropzone flex flex-wrap items-center justify-center p-[1rem] gap-[0.5rem] dropzone w-[30%] min-h-[30%] rounded-md duration-150 !bg-blue-50 hover:!bg-blue-100 !border-dashed !border-blue-500 max-2xl:w-[40%] max-md:w-[50%] max-sm:w-[70%] max-sm:h-[40%] dark:!bg-blue-950 dark:hover:!bg-blue-900"
       >
         <div class="dz-message flex flex-col justify-center">
-          <div>
+          <div class="max-md:text-sm max-sm:text-xs dark:text-slate-50">
             Drag and <span class="text-blue-500">Drop</span> your files here or
           </div>
           <button
             data-hs-file-upload-trigger
-            class="bg-blue-500 px-4 py-2 rounded-full max-w-[80%] mx-auto mt-5 text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+            class="bg-blue-500 px-4 py-2 rounded-full max-w-[80%] mx-auto mt-5 text-slate-50 duration-200 hover:bg-blue-600 active:bg-blue-700 max-md:text-sm max-sm:text-xs"
           >
             Click to upload
           </button>
@@ -91,7 +91,7 @@
           <span class="dz-upload" data-dz-uploadprogress></span>
         </div>
         <div class="dz-error-message !mt-5" >Couldn't upload!</span></div>
-        <div class="dz-success-mark !mt-[-70px]">
+        <div class="dz-success-mark !mt-[-2rem]">
           <svg
             width="54"
             height="54"
@@ -104,7 +104,7 @@
             />
           </svg>
         </div>
-        <div class="dz-error-mark !mt-[-70px]">
+        <div class="dz-error-mark !mt-[-2rem]">
           <svg
             width="54"
             height="54"
