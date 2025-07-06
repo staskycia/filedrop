@@ -1,4 +1,5 @@
 uploads
 .DS_Store
 promo
-
+__pycache__
+filedrop.db
