@@ -5,6 +5,8 @@ from flask_login import UserMixin, LoginManager, login_user, login_required, log
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from random import randint
+from consolewindow import console_window
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
 ALLOWED_EXTENSIONS = {'pdf', 'jpg', 'png'}
@@ -36,6 +38,12 @@ with app.app_context():
 @login_manager.user_loader
 def load_user(userid):
     return User.query.get(int(userid))
+
+def change_password(username, new_password):
+    with app.app_context():
+        user = User.query.filter_by(username = username).first()
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
 
 @app.route("/")
 @app.route("/upload", methods=["POST", "GET"])
@@ -82,8 +90,18 @@ def logout():
 @app.route("/panel")
 @login_required
 def panel():
-    return f"PANEL of user {current_user.username}"
+    return f"PANEL of user {current_user.username} USING {request.remote_addr}"
 
+@app.route("/recovery", methods=["POST", "GET"])
+def recovery():
+    if request.method == "POST" and request.remote_addr == "127.0.0.1":
+        new_password = f"{randint(1000, 9999)}-{randint(1000, 9999)}-{randint(1000, 9999)}-{randint(1000, 9999)}"
+        change_password("admin", new_password)
+        console_window("NEW FILEDROP PANEL PASSWORD", new_password)
+        flash("Password changed succesfully! Check the console for details.")
+        return redirect(url_for("login"))
+    return render_template("recovery.html", allowed = True if request.remote_addr == "127.0.0.1" else False)
+   
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5500)
