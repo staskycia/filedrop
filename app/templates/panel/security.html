@@ -1,0 +1,185 @@
+{% extends "panel/base.html" %} {% block title%} Security {% endblock %} {%
+block content%}
+<div class="flex flex-row flex-wrap gap-[2%] justify-center">
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center  dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Change password</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input class="hidden" type="text" name="field" value="change_password" />
+      <input
+        required
+        type="password"
+        class="mt-4 text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[90%] max-sm:h-[20%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="Current password"
+        name="current_password"
+      /><br />
+      <input
+        required
+        type="password"
+        class="mt-2 text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[90%] max-sm:h-[20%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="New Password"
+        name="new_password"
+      /><br />
+      <input
+        required
+        type="password"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[90%] max-sm:h-[20%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="Confirm new password"
+        name="confirm_new_password"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700 max-sm:mb-10"
+        value="Submit"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Security mode</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input type="hidden" name="field" value="security_mode" />
+
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex items-center gap-2">
+          <input type="radio" id="security_mode_none" name="security_mode"
+          value="none" class="w-5 h-5" {% if security_mode == "none" %} checked
+          {% endif %}/>
+          <label for="security_mode_none">None</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="radio" id="security_mode_whitelist" name="security_mode"
+          value="whitelist" class="w-5 h-5" {% if security_mode == "whitelist"
+          %} checked {% endif %}/>
+          <label for="security_mode_whitelist">Whitelist</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="radio" id="security_mode_blacklist" name="security_mode"
+          value="blacklist" class="w-5 h-5" {% if security_mode == "blacklist"
+          %} checked {% endif %}/>
+          <label for="security_mode_blacklist">Blacklist</label>
+        </div>
+      </div>
+
+      <input
+        type="submit"
+        class="my-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+        value="Submit"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">IP Whitelist</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input
+        class="hidden"
+        type="text"
+        name="field"
+        value="edit_whitelist"
+      />
+      <div class="flex flex-col">
+        {% for ip in ips %}
+        <div class="flex items-center gap-2 mb-2">
+          <input class="w-5 h-5" type="checkbox" id="checkbox_whitelist_{{ip[0]}}"
+          name="ip_whitelist_checkbox" value="{{ip[0]}}" {% if
+          ip[1]== 1 %}checked{% endif %} />
+          <label for="checkbox_whitelist_{{ip[0]}}">{{ip[0]}}</label>
+        </div>
+        {% endfor %}
+      </div>
+      <input
+        type="submit"
+        class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+        value="Update"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">IP Blacklist</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input
+        class="hidden"
+        type="text"
+        name="field"
+        value="edit_blacklist"
+      />
+      <div class="flex flex-col">
+        {% for ip in ips %}
+        <div class="flex items-center gap-2 mb-2">
+          <input class="w-5 h-5" type="checkbox" id="checkbox_blacklist_{{ip[0]}}"
+          name="ip_blacklist_checkbox" value="{{ip[0]}}" {% if
+          ip[2]== 1 %}checked{% endif %} />
+          <label for="checkbox_blacklist_{{ip[0]}}">{{ip[0]}}</label>
+        </div>
+        {% endfor %}
+      </div>
+      <input
+        type="submit"
+        class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+        value="Update"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Add IP</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input class="hidden" type="text" name="field" value="add_ip" />
+      <input
+        type="text"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="0.0.0.0"
+        name="ip"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-green-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-green-600 active:bg-green-700"
+        value="Add"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Delete IP</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.security')}}">
+      <input class="hidden" type="text" name="field" value="delete_ip" />
+      <input
+        type="text"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="0.0.0.0"
+        name="ip"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-red-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-red-600 active:bg-red-700"
+        value="Delete"
+      />
+    </form>
+  </div>
+</div>
+{% endblock %}

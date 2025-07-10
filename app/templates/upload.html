@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FileDrop | Send files</title>
+    <title>FileDrop Upload</title>
     <link
       rel="stylesheet"
       href="{{url_for('static', filename='css/main.css')}}"
@@ -31,9 +31,15 @@
       class="flex justify-center items-center min-h-screen flex-col content-evenly text-center"
     >
       <p class="p-4 text-5xl dark:text-white">
-        FileDrop <span class="font-bold bg-gradient-to-r from-blue-400 to-blue-600 inline-block text-transparent bg-clip-text py-2">Anything</span> <!--text-blue-500-->
+        FileDrop
+        <span
+          class="font-bold bg-gradient-to-r from-blue-400 to-blue-600 inline-block text-transparent bg-clip-text py-2"
+          >Anything</span
+        >
+        <!--text-blue-500-->
       </p>
 
+      {% if enabled %}
       <div
         id="drop"
         class="dropzone flex flex-wrap items-center justify-center p-[1rem] gap-[0.5rem] w-[30%] min-h-[30%] rounded-md duration-150 !bg-blue-50 hover:!bg-blue-100 !border-dashed !border-blue-500 max-2xl:w-[40%] max-md:w-[50%] max-sm:w-[70%] max-sm:h-[40%] dark:!bg-blue-950 dark:hover:!bg-blue-900"
@@ -50,7 +56,30 @@
           </button>
         </div>
       </div>
+      {% else %}
 
+      <br /><br />
+      <div
+        class="dropzone flex flex-wrap items-center justify-center p-[1rem] gap-[0.5rem] w-[30%] min-h-[30%] rounded-md duration-150 !bg-gray-200 !border-dashed !border-gray-500 max-2xl:w-[40%] max-md:w-[50%] max-sm:w-[70%] max-sm:h-[40%] dark:!bg-gray-500 dark:!border-gray-200"
+      >
+        <div class="dz-message flex flex-col justify-center">
+          <div class="max-md:text-sm max-sm:text-xs dark:text-slate-50">
+            Drag and
+            <span class="text-gray-500 dark:text-gray-300">Drop</span> your
+            files here or
+          </div>
+          <p
+            class="bg-gray-500 px-4 py-2 rounded-full max-w-[80%] mx-auto mt-5 text-slate-50 duration-200 max-md:text-sm max-sm:text-xs"
+          >
+            Click to upload
+        </p>
+        </div>
+      </div>
+      <p class="mt-4 max-w-[50%] dark:text-white">
+        You can't drop files now! This option is either turned off or your don't
+        have premissions to share files here.
+      </p>
+      {% endif %}
       <!-- <input
           type="submit"
           class="bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
@@ -76,7 +105,7 @@
 
     <script>
       var myDropzone = new Dropzone("#drop", {
-        url: "{{url_for('upload')}}",
+        url: "{{url_for('main.upload')}}",
         paramName: "file",
         maxFiles: 10,
         maxFilesize: 10000,

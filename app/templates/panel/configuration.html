@@ -1,0 +1,141 @@
+{% extends "panel/base.html" %} {% block title%} Configuration {% endblock %} {%
+block content%}
+<div class="flex flex-row flex-wrap gap-[2%] justify-center">
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Files Reciving</h1>
+      <p class="text-lg max-w-[99%]">
+        File reciving is currently
+        <span class="font-bold"
+          >{% if sharing_enabled %} enabled {% else %} disabled {% endif
+          %}</span
+        >
+      </p>
+    </div>
+    <form method="POST" action="{{url_for('panel.configuration')}}">
+      <input class="hidden" type="text" name="field" value="sharing_action" />
+      <input
+        class="hidden"
+        type="text"
+        name="sharing_action"
+        value="{% if sharing_enabled %}disable{% else %}enable{% endif %}"
+      />
+      <input
+        type="submit"
+        class="mb-4 bg-red-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-red-600 active:bg-red-700 {% if not sharing_enabled %} bg-green-500 hover:bg-green-600 active:bg-green-700 {% endif %}"
+        value="{% if sharing_enabled %} Disable {% else %} Enable {% endif %}"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Allowed extensions</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.configuration')}}">
+      <input
+        class="hidden"
+        type="text"
+        name="field"
+        value="allowed_extensions"
+      />
+      <div class="flex flex-col">
+        {% for extension in extensions %}
+        <div class="flex items-center gap-2 mb-2">
+          <input type="checkbox" id="checkbox_{{extension[0]}}"
+          name="extension_checkbox" value="{{extension[0]}}" {% if
+          extension[1]== 1 %}checked{% endif %} />
+          <label for="checkbox_{{extension[0]}}">{{extension[0]}}</label>
+        </div>
+        {% endfor %}
+      </div>
+      <input
+        type="submit"
+        class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+        value="Update"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Add extension</h1>
+      <p class="text-lg max-w-[99%]">
+        Do not include the leading dot, case sensitive
+      </p>
+    </div>
+    <form method="POST" action="{{url_for('panel.configuration')}}">
+      <input class="hidden" type="text" name="field" value="add_extension" />
+      <input
+        type="text"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="eg. pdf"
+        name="extension"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-green-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-green-600 active:bg-green-700"
+        value="Add"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Delete extension</h1>
+      <p class="text-lg max-w-[99%]">
+        Do not include the leading dot, case sensitive
+      </p>
+    </div>
+    <form method="POST" action="{{url_for('panel.configuration')}}">
+      <input class="hidden" type="text" name="field" value="delete_extension" />
+      <input
+        type="text"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        placeholder="eg. pdf"
+        name="extension"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-red-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-red-600 active:bg-red-700"
+        value="Delete"
+      />
+    </form>
+  </div>
+
+<div
+    class="w-[48%] min-h-[300px] my-[1%] bg-gray-200 rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-600"
+  >
+    <div>
+      <h1 class="text-2xl mt-4">Upload folder</h1>
+    </div>
+    <form method="POST" action="{{url_for('panel.configuration')}}">
+      <input class="hidden" type="text" name="field" value="upload_folder" />
+      <input
+        type="text"
+        class="text-blue-500 placeholder-blue-500 px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
+        value="{{upload_folder}}"
+        name="upload_folder"
+      /><br />
+      <input
+        type="submit"
+        class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
+        value="Update"
+      />
+    </form>
+  </div>
+
+  <div
+    class="w-[48%] min-h-[300px] my-[1%] bg-transparent rounded-md min-w-[350px] flex items-center flex-col justify-evenly text-center dark:bg-slate-900"
+  >
+  </div>
+</div>
+{% endblock %}
