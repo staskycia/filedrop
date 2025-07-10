@@ -1,5 +1,6 @@
-uploads
 .DS_Store
-promo
-__pycache__
-filedrop.db
+app/config_tools/__pycache__/
+app/models/__pycache__/
+bin/
+lib/
+pyvenv.cfg

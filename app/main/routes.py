@@ -7,7 +7,6 @@ import os
 from random import randint
 
 from app.models.user import User
-from app.models.config_value import ConfigValue
 from app.extensions import db
 from app.config_tools import get_config, allowed_file, get_whitelist_status, get_blacklist_status
 
