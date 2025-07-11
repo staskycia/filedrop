@@ -6,6 +6,9 @@ import os
 import markdown
 import psutil
 import socket
+import base64
+import qrcode
+from io import BytesIO
 
 from app.models.user import User
 from app.extensions import db
@@ -133,4 +136,17 @@ def logviewer(file):
 @bp.route("/info")
 @login_required
 def info():
-    return render_template("panel/info.html", host_ips=get_host_ips(), port=get_port())
+    host_ips=get_host_ips()
+    port = get_port()
+    
+    qrs = list()
+    
+    for ip in host_ips:
+        # if(ip == "127.0.0.1"):
+        #     continue
+        qr = qrcode.make(f"http://{ip}:{port}")
+        buffer = BytesIO()  # ✅ Create an in-memory buffer
+        qr.save(buffer, format="PNG")
+        qrs.append((ip, base64.b64encode(buffer.getvalue()).decode("utf-8")))
+    
+    return render_template("panel/info.html", host_ips=host_ips, port=port, qrs = qrs)
