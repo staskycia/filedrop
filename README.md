@@ -1,11 +1,11 @@
 <div align="center">
     <a href="https://github.com/staskycia/filedrop">
-      ```html
+      
     <picture>
           <source media="(prefers-color-scheme: dark)" srcset="./.github/dark.png">
           <img alt="FileDrop Anything Banner" src="./.github/dark.png">
     </picture>
-    ```
+
 
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./.github/light.png">
