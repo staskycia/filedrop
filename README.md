@@ -1,7 +1,16 @@
 <div align="center">
     <a href="https://github.com/staskycia/filedrop">
-      <img src="./.github/light.png#gh-light-mode-only" alt="FileDrop banner light" />
-      <img src="./.github/dark.png#gh-dark-mode-only" alt="FileDrop banner dark" />
+      ```html
+    <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="./.github/dark.png">
+          <img alt="FileDrop Anything Banner" src="./.github/dark.png">
+    </picture>
+    ```
+
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./.github/light.png">
+      <img alt="FileDrop Anything Banner" src="./.github/light.png">
+    </picture>
     </a>
     <h3>Filedrop</h3>
     <p>An easy way to share files between all your devices</p>
