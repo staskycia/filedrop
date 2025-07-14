@@ -54,7 +54,7 @@ def upload():
         
         for file in uploaded:
             if file and allowed_file(file.filename):
-                filename = f'FILEDROP_{str(datetime.now()).replace(" ", "_")}_{secure_filename(file.filename).replace(" ", "_")}'
+                filename = f'FILEDROP_{str(datetime.now()).replace(" ", "_").replace(":", "_")}_{secure_filename(file.filename).replace(" ", "_")}'
                 current_app.logger.info(f'{request.remote_addr} succesfully shared file "{filename}"')
                 file.save(os.path.join(get_config("upload_folder"), filename))
             elif file:
