@@ -38,6 +38,12 @@ FileDrop is a web app you can run, to receive files from any other device in the
 
 On Windows, you may need to use `py` instead of `python`, and ensure Python is added to your PATH during installation.
 
+On MacOS, use `python3` and `pip3` instead of `python` and `pip` or run this commands after installation of Python and pip:
+```sh
+alias python-python3
+alias pip=pip3
+```
+
 ### Prerequisites
 
 Before you begin, make sure you have the following installed on your system:
