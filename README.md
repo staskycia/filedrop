@@ -50,7 +50,7 @@ Before you begin, make sure you have the following installed on your system:
   Check with: `pip --version`
 
 - **Git** (for cloning the repository)  
-  Installation guide: [github.com](https://github.com/git-guides/install-git$0)
+  Installation guide: [github.com](https://github.com/git-guides/install-git)
 
 To verify installation:
 
