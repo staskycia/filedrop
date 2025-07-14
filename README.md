@@ -40,7 +40,7 @@ On Windows, you may need to use `py` instead of `python`, and ensure Python is a
 
 On MacOS, use `python3` and `pip3` instead of `python` and `pip` or run this commands after installation of Python and pip:
 ```sh
-alias python-python3
+alias python=python3
 alias pip=pip3
 ```
 
