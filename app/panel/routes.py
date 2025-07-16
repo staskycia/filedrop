@@ -33,6 +33,7 @@ def get_port():
 @bp.route("/configuration", methods=["POST", "GET"])
 @login_required
 def configuration():
+    flash("This is a demo instance, so some setting may not be available", "warning")
     sharing_enabled = True if get_config("sharing_enabled") == "True" else False
     if request.method == "POST":
         field = request.form.get("field")
@@ -53,16 +54,11 @@ def configuration():
                 elif not extension[0] in new_allowed_extensions and extension[1] == 1:
                     set_extension_status(extension[0], 0)
         if field == "add_extension":
-            add_extension(request.form.get("extension"))
+            flash("This can't be changed on a demo instance!", "error")
         if field == "delete_extension":
-            delete_extension(request.form.get("extension"))
+            flash("This can't be changed on a demo instance!", "error")
         if field == "upload_folder":
-            upload_folder = request.form.get("upload_folder")
-            set_config("upload_folder", upload_folder)
-            if not os.path.exists(upload_folder):
-                os.makedirs(upload_folder)
-            flash("Upload folder changed succesfully!", "success")
-            current_app.logger.info(f'{request.remote_addr} changed the upload folder to "{upload_folder}"')
+            flash("This can't be changed on a demo instance!", "error")
     return render_template("panel/configuration.html", sharing_enabled = sharing_enabled, extensions = get_all_extensions(), upload_folder = get_config("upload_folder"))
 
 @bp.route("/security", methods=["GET", "POST"])
@@ -77,11 +73,7 @@ def security():
             if current_password and new_password and confirm_new_password:
                 if check_password_hash(User.query.filter_by(username="admin").first().password, current_password):
                     if new_password == confirm_new_password:
-                        adminuser = User.query.filter_by(username="admin").first()
-                        adminuser.password = generate_password_hash(new_password)
-                        db.session.commit()
-                        current_app.logger.info(f"{request.remote_addr} succesfully changed the admin password")
-                        flash("Password changed succesfully!", "success")
+                        flash("This can't be changed on a demo instance!", "error")
                     else:
                         flash("Passwords do not match!", "error")
                 else:
@@ -89,49 +81,39 @@ def security():
             else:
                 flash("All fields are required!", "error")
         if field == "security_mode":
-            security_mode = request.form.get("security_mode")
-            set_config("security_mode", security_mode)
+            flash("This can't be changed on a demo instance!", "error")
         if field == "add_ip":
             add_ip(request.form.get("ip"))
         if field == "delete_ip":
             delete_ip(request.form.get("ip"))
         if field == "edit_whitelist":
-            new_whitelist_ips = request.form.getlist("ip_whitelist_checkbox")
-            for ip in get_all_ips():
-                if ip[1] and ip[0] not in new_whitelist_ips:
-                    set_whitelist_status(ip[0], 0)
-                elif not ip[1] and ip[0] in new_whitelist_ips:
-                    set_whitelist_status(ip[0], 1)
+            flash("This can't be changed on a demo instance!", "error")
         if field == "edit_blacklist":
-            new_black_list = request.form.getlist("ip_blacklist_checkbox")
-            for ip in get_all_ips():
-                if ip[2] and ip[0] not in new_black_list:
-                    set_blacklist_status(ip[0], 0)
-                elif not ip[2] and ip[0] in new_black_list:
-                    set_blacklist_status(ip[0], 1) 
+            flash("This can't be changed on a demo instance!", "error")
     return render_template("panel/security.html", security_mode=get_config("security_mode"), ips=get_all_ips())
 
-@bp.route("/docs")
-@login_required
-def docs():
-    readme_path = os.path.join(current_app.root_path, "..", "README.md")
-    with open(readme_path, 'r', encoding='utf-8') as readme:
-        readme_content = readme.read()
-    return render_template("panel/docs.html", readme_content = markdown.markdown(readme_content))
+# @bp.route("/docs")
+# @login_required
+# def docs():
+#     readme_path = os.path.join(current_app.root_path, "..", "README.md")
+#     with open(readme_path, 'r', encoding='utf-8') as readme:
+#         readme_content = readme.read()
+#     return render_template("panel/docs.html", readme_content = markdown.markdown(readme_content))
 
 @bp.route("/logs")
 @login_required
 def logs():
+    flash("You can't view logs in the demo mode!", "warning")
     logs_dir = os.path.join(current_app.root_path, "..", "logs")
     return render_template("/panel/logs.html", logs=os.listdir(logs_dir))
 
-@bp.route("/log/<file>")
-@login_required
-def logviewer(file):
-    log_file = os.path.join(current_app.root_path, "..", "logs", file)
-    with open(log_file, "r") as log:
-        content = log.read()
-    return Response(content, mimetype="text/plain")
+# @bp.route("/log/<file>")
+# @login_required
+# def logviewer(file):
+#     log_file = os.path.join(current_app.root_path, "..", "logs", file)
+#     with open(log_file, "r") as log:
+#         content = log.read()
+#     return Response(content, mimetype="text/plain")
 
 @bp.route("/info")
 @login_required

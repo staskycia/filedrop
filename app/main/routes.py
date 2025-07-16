@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, abort, redirect, url_for, current_app
+from flask import render_template, request, flash, abort, redirect, url_for, current_app, send_file
 from flask_login import login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -30,6 +30,7 @@ def console_window(title, content):
 @bp.route("/")
 @bp.route("/upload", methods=["POST", "GET"])
 def upload():   
+    flash("Since this is a demo instance, you can find all shared files at <a href='/files' class='text-yellow-800 hover:text-yellow-900'>/files</a>", "warning")
     security_mode = get_config("security_mode")
     user_ip = request.remote_addr
     if security_mode != "none":
@@ -65,6 +66,7 @@ def upload():
 
 @bp.route("/login", methods=["POST", "GET"])
 def login():
+    flash("This is a demo instance, so you may use password \"<strong>admin</strong>\"", "warning")
     if current_user.is_authenticated:
         return redirect("panel")
     if request.method == "POST":
@@ -92,14 +94,22 @@ def logout():
 @bp.route("/recovery", methods=["POST", "GET"])
 def recovery():
     if request.method == "POST" and request.remote_addr == "127.0.0.1":
-        new_password = f"{randint(1000, 9999)}-{randint(1000, 9999)}-{randint(1000, 9999)}-{randint(1000, 9999)}"
-        user = User.query.filter_by(username = "admin").first()
-        user.password = generate_password_hash(new_password)
-        db.session.commit()
-        current_app.logger.info(f"{request.remote_addr} succesfully recoverd password")
         logout_user()
-        console_window("NEW FILEDROP PANEL PASSWORD", new_password)
-        flash("Password changed succesfully! Check the console for details.", "success")
+        flash("Your new password is \"<strong>admin</strong>\"", "success")
         return redirect(url_for("main.login"))
-    return render_template("recovery.html", allowed = True if request.remote_addr == "127.0.0.1" else False)
-   
+    else:
+        flash("Usually, this option is only available on the host computer", "warning")
+    return render_template("recovery.html", allowed = True)
+
+@bp.route("/files")
+def files():
+    flash("This is a demo-only feature!", "warning")
+    return render_template("/files.html", files=os.listdir(get_config("upload_folder")))
+
+@bp.route("/file/<file>")
+def fileviewer(file):
+    file_path = os.path.join(get_config("upload_folder"), file)
+    if os.path.exists(file_path):
+        return send_file(file_path)
+    flash("Requested file wasn't found!", "error")
+    return redirect(url_for("main.files"))

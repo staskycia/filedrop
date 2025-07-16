@@ -9,13 +9,8 @@ content%}
     </div>
 
     {% for log in logs %}
-    
-    <a
-        href="{{url_for('panel.logviewer', file=log)}}"
-        target="_blank"
-      class="mb-4 bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
-      >{{log}}</a
-    >
+
+    <p class="mb-4 bg-gray-500 px-14 py-2 rounded-full text-white">{{log}}</p>
     {% endfor %}
   </div>
 

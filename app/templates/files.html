@@ -51,38 +51,10 @@
     </div>
     {% endif %} {% endwith %}
 
-    <div
-      class="flex justify-center items-center min-h-screen flex-col content-evenly text-center"
-    >
-      <p class="p-4 text-5xl dark:text-white">
-        FileDrop
-        <span
-          class="font-bold bg-gradient-to-r from-blue-400 to-blue-600 inline-block text-transparent bg-clip-text py-2"
-          >Panel</span
-        >
-      </p>
-
-      <form method="POST" action="{{url_for('main.login')}}">
-        <!-- <input
-          type="text"
-          name="login"
-          required
-          placeholder="username"
-          class="text-blue-500 placeholder-blue-500 capitalize px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
-        /><br /> -->
-        <input
-          type="password"
-          name="password"
-          required
-          placeholder="password"
-          class="text-blue-500 placeholder-blue-500 capitalize px-[1rem] py-[0.9rem] mb-4 rounded-md duration-150 bg-blue-50 hover:bg-blue-100 focus:bg-blue-200 focus:outline-none border-[2px] border-solid border-blue-500 max-sm:w-[70%] max-sm:h-[40%] dark:bg-blue-950 dark:hover:bg-blue-900 dark:focus:bg-blue-800 dark:placeholder-white dark:text-white"
-        /><br />
-        <input
-          type="submit"
-          class="bg-blue-500 px-14 py-2 rounded-full text-white duration-200 hover:bg-blue-600 active:bg-blue-700"
-          value="Login"
-        />
-      </form>
+    <div class="flex flex-row justify-left m-4 flex-wrap">
+    {% for file in files %}
+        <a href="/file/{{file}}" target="_blank" class="max-w-[300px] text-sm bg-blue-500 py-4 px-2 rounded-md m-2 text-white duration-200 hover:bg-blue-600 active:bg-blue-700">{{file}}</a>
+    {% endfor %}
     </div>
   </body>
 </html>
