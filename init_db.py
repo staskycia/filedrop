@@ -1,3 +1,15 @@
+import os
+import secrets
+
+key_path = os.path.abspath(os.path.join(__file__, "..", "secret_key.txt"))
+os.makedirs(os.path.dirname(key_path), exist_ok=True)
+
+if not os.path.exists(key_path):
+    key = secrets.token_urlsafe(64)
+    with open(key_path, "w") as f:
+        f.write(key)
+
+
 from app.models.config_value import ConfigValue
 from app.models.file_extension import FileExtension
 from app.models.ip import Ip
@@ -5,9 +17,6 @@ from app.models.user import User
 
 from app import create_app
 from app.extensions import db
-
-import os
-import secrets
 
 app = create_app()
 
@@ -22,14 +31,6 @@ allowed_extensions = ["pdf", "txt", "zip", "csv", "gif", "jpg", "jpeg", "HEIC", 
 
 if not os.path.exists(upload_folder.value):
     os.mkdir(upload_folder.value)
-
-key_path = os.path.join(app.root_path, "..", "secret_key.txt")
-if not os.path.exists(key_path):
-    key = secrets.token_urlsafe(64)
-    with open(key_path, "w") as f:
-        f.write(key)
-    print(key)
-
 with app.app_context():
     db.create_all()
     
