@@ -6,7 +6,7 @@
   </h3>
     <p>An easy way to share files between all your devices</p>
     <br/>
-    <a href="#">View Demo</a>
+    <a href="https://vimeo.com/1101557107?ts=0&share=copy">View Demo</a>
     &middot;
     <a href="https://github.com/staskycia/filedrop/issues/new?labels=bug&template=bug_report.md">Report Bug</a>
     &middot;
