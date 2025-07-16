@@ -7,6 +7,7 @@ from app import create_app
 from app.extensions import db
 
 import os
+import secrets
 
 app = create_app()
 
@@ -14,12 +15,20 @@ adminuser = User(username="admin", password="scrypt:32768:8:1$JRDPCndrkLCoOUtc$c
 sharing_enabled = ConfigValue(name="sharing_enabled", value="True")
 upload_folder = ConfigValue(name="upload_folder", value=os.path.join(app.root_path, "..", "uploads"))
 security_mode = ConfigValue(name="security_mode", value="none")
+demo = ConfigValue(name="demo", value="False")
 ip = Ip(ip="127.0.0.1", on_whitelist=1, on_blacklist=0)
 
 allowed_extensions = ["pdf", "txt", "zip", "csv", "gif", "jpg", "jpeg", "HEIC", "png", "svg", "pptx", "docx", "xlsx", "mp4", ]
 
 if not os.path.exists(upload_folder.value):
     os.mkdir(upload_folder.value)
+
+key_path = os.path.join(app.root_path, "..", "secret_key.txt")
+if not os.path.exists(key_path):
+    key = secrets.token_urlsafe(64)
+    with open(key_path, "w") as f:
+        f.write(key)
+    print(key)
 
 with app.app_context():
     db.create_all()
@@ -28,6 +37,7 @@ with app.app_context():
     db.session.add(sharing_enabled)
     db.session.add(upload_folder)
     db.session.add(security_mode)
+    db.session.add(demo)
     db.session.add(ip)
     
     for extension in allowed_extensions:

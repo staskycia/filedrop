@@ -11,3 +11,5 @@ app/main/__pycache__/
 app/panel/__pycache__/
 logs/
 uploads/
+secret_key.txt
+
