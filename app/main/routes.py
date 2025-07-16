@@ -30,7 +30,7 @@ def console_window(title, content):
 @bp.route("/")
 @bp.route("/upload", methods=["POST", "GET"])
 def upload():   
-    flash("Since this is a demo instance, you can find all shared files at <a href='/files' class='text-yellow-800 hover:text-yellow-900'>/files</a>", "warning")
+    flash("Since this is a demo instance, you can find all shared files at <a href='/files' class='text-yellow-800 hover:text-yellow-900'>/files</a>. See the <a href='https://vimeo.com/1101557107?ts=0&share=copy' class='text-yellow-800 hover:text-yellow-900'>demo video</a> for details ans <a href='https://github.com/staskycia/filedrop' class='text-yellow-800 hover:text-yellow-900'>GitHub</a> for installation guide.", "warning")
     security_mode = get_config("security_mode")
     user_ip = request.remote_addr
     if security_mode != "none":
